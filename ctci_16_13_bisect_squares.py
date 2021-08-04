@@ -8,12 +8,11 @@ to find the centers of each square will lead to a slope and the point slope form
 The most difficult part of this problem has to do with finding the equation of the line segment
 where the line through the centers touches the outer edge of the squares.
 I had to do a little digging into my geometry brain, and realize that parametric equations were
-a good way to show line segments with regard to a range t.
+a good way to show line segments with regard to a range t. 
 
 I think the Cracking the Coding solution skips over what the actual line segment is supposed
 to look like, so your equations might end up looking different.
 """
-
 class square:
     ## Define a square object that returns its center point
     #  Note: squares are paralell to x axis
@@ -65,6 +64,9 @@ class square:
         if m == 1:
             # return corners
             return [(self.x, self.y),(self.x + self.width, self.y + self.height)]
+        if m == -1:
+            # return corners
+            return [(self.x, self.y + self.height),(self.x + self.width, self.y)]
         if abs(m) < 1:
             # get y intercepts
             # calculate y intercept from center using slope
@@ -127,6 +129,7 @@ def get_edges(s1, s2):
         e1 = s1.get_cross_points(my, mx)
         e2 = s2.get_cross_points(my, mx)
 
+    # print "e1:", e1, "e2:", e2
     max_d = 0
     max_p1 = None
     max_p2 = None
@@ -155,8 +158,8 @@ def parametric_equation(point1, point2):
 
     # points
     x1 = point1[0]
-    x2 = point2[0]
     y1 = point1[1]
+    x2 = point2[0]
     y2 = point2[1]
 
     # slope
@@ -172,18 +175,95 @@ def parametric_equation(point1, point2):
     eq += "x = " + str(x1) + " + " + str(a) + "t"
 
     # segment range t - solve parametric for t
-    # t = (y2 - y1) / b or t = (x2 - x1) / a - should be the same outcome
-    ty = (y2 - y1) / b
-    tx = (x2 - x1) / a
-    # print "ty:", ty, "tx:", tx
+    # from y = y1 + bt, x = x1 + at
+    # t = (y2 - y1) / b or t = (x2 - x1) / a
+    if b != 0:
+        # if b is 0, line is horizontal and cannot solve for t
+        t = (y2 - y1) / b
+    elif a != 0:
+        # if a is 0, line is vertical and cannot solve for t
+        t = (x2 - x1) / a
+    else:
+        # should not make it here - line cannot be horizontal and vertical
+        t = "NA"
+    # print "t:", t
 
     eq += " "
-    eq += "range: {0 to " + str(ty) + "}"
+    eq += "range: {0 to " + str(t) + "}"
 
     return eq
 
 s1 = square(0, 0, 4, 4)
-s2 = square(4, 2, 4, 4)
-
+s2 = square(4, 4, 4, 4)
 points = get_edges(s1, s2)
-print parametric_equation(points[0], points[1])
+if points is not None:
+    # print "points:", points
+    print parametric_equation(points[0], points[1])
+else:
+    print "boxes have the same center"
+
+s1 = square(0, 0, 4, 4)
+s2 = square(4, -4, 4, 4)
+points = get_edges(s1, s2)
+if points is not None:
+    # print "points:", points
+    print parametric_equation(points[0], points[1])
+else:
+    print "boxes have the same center"
+
+s1 = square(0, 0, 4, 4)
+s2 = square(-4, -4, 4, 4)
+points = get_edges(s1, s2)
+if points is not None:
+    # print "points:", points
+    print parametric_equation(points[0], points[1])
+else:
+    print "boxes have the same center"
+
+s1 = square(0, 0, 4, 4)
+s2 = square(-4, 4, 4, 4)
+points = get_edges(s1, s2)
+if points is not None:
+    # print "points:", points
+    print parametric_equation(points[0], points[1])
+else:
+    print "boxes have the same center"
+
+s1 = square(0, 0, 4, 4)
+s2 = square(4, 4, 4, 4)
+points = get_edges(s1, s2)
+if points is not None:
+    # print "points:", points
+    print parametric_equation(points[0], points[1])
+else:
+    print "boxes have the same center"
+
+## Horizontal test
+s1 = square(0, 0, 4, 4)
+s2 = square(4, 0, 4, 4)
+points = get_edges(s1, s2)
+if points is not None:
+    # print "points:", points
+    print parametric_equation(points[0], points[1])
+else:
+    print "boxes have the same center"
+
+## Vertical test
+s1 = square(0, 0, 4, 4)
+s2 = square(0, 4, 4, 4)
+points = get_edges(s1, s2)
+if points is not None:
+    # print "points:", points
+    print parametric_equation(points[0], points[1])
+else:
+    print "boxes have the same center"
+
+## Off axis test
+s1 = square(0, 0, 4, 4)
+s2 = square(2.2, 4, 4, 4)
+points = get_edges(s1, s2)
+if points is not None:
+    # print "points:", points
+    print parametric_equation(points[0], points[1])
+else:
+    print "boxes have the same center"
