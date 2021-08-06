@@ -30,8 +30,7 @@ No line exists unless there are at least two points
 # moral of the story - floating point numbers are not predictable or precise.
 # ways to mitigate the issue:
 # 1. Floor a value with epsilon or rounding
-# 2. Check an epsilon value +/- away to see if 
-# I have opted to use rounding to 8 decimal places for this solution.
+# 2. Check an epsilon value +/- away to see if same(ish) value
 
 epsilon = .00000001  # since we are rounding by 8 decimal places
 
