@@ -8,14 +8,20 @@ Assume: integers
 def subsort(arr):
 
     def find_unsorted_sequence():
-
+        """
+        Main calling method
+        Find left and right out of order edges
+        Find min and max between edges
+        Adjust indexes by expanding and adjusting min and max values
+        """
         if len(arr) <= 1:
             return (-1, -1)  # not possible to sort
 
         left_edge, right_edge = find_unsorted_edges()
         minval, maxval = find_middle_min_max(left_edge, right_edge)
-        left_edge_min, right_edge_max = find_insert_min_max(left_edge, right_edge, minval, maxval)
+        left_edge_min, right_edge_max = expand_indexes(left_edge, right_edge, minval, maxval)
         print "edges:", left_edge, right_edge, "min/max:", minval, maxval, "min/max edges:", left_edge_min, right_edge_max
+
         if left_edge_min > -1 and right_edge_max > -1:
             return (left_edge_min, right_edge_max)
         else:
@@ -61,10 +67,10 @@ def subsort(arr):
                 maxval = max(maxval, arr[i])
         return (minval, maxval)
 
-    def find_insert_min_max(left_edge, right_edge, minval, maxval):
+    def expand_indexes(left_edge, right_edge, minval, maxval):
         """
         From left and right edges, 
-        find min and max edges going towards middle
+        expand indexes and adjust min and max values accordingly.
         """
         left_edge_min = -1
         right_edge_max = -1
