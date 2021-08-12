@@ -4,9 +4,22 @@ if you sorted elements m through n ,the entire array would be sorted.
 Minimize n - m (that is, find the smallest such sequence).
 
 Assume: integers
-"""
-
+"""        
 def subsort(arr):
+
+    def find_unsorted_sequence():
+
+        if len(arr) <= 1:
+            return (-1, -1)  # not possible to sort
+
+        left_edge, right_edge = find_unsorted_edges()
+        minval, maxval = find_middle_min_max(left_edge, right_edge)
+        left_edge_min, right_edge_max = find_insert_min_max(left_edge, right_edge, minval, maxval)
+        print "edges:", left_edge, right_edge, "min/max:", minval, maxval, "min/max edges:", left_edge_min, right_edge_max
+        if left_edge_min > -1 and right_edge_max > -1:
+            return (left_edge_min, right_edge_max)
+        else:
+            return (-1, -1)
 
     def find_unsorted_edges():
         """
@@ -56,42 +69,45 @@ def subsort(arr):
         left_edge_min = -1
         right_edge_max = -1
         if left_edge > -1 and right_edge > -1 and minval > -1 and maxval > -1:
-            i = 0
-            j = len(arr) - 1
-            while (i <= left_edge):
-                if arr[i] >= minval:
+
+            # Start left and right one away from current edge
+            i = left_edge - 1
+            j = right_edge + 1
+
+            while i >= 0 and j < len(arr):
+
+                if arr[i] <= minval and arr[j] >= maxval:
+                    # Reached min and max indexes
+                    print "breaking on", i, j
+                    print "min:", minval, "max:", maxval
+                    break
+
+                # Adjust indexes, reset min/max on the fly
+                if arr[i] > minval:
+                    if arr[i] > maxval:
+                        maxval = arr[i]
                     left_edge_min = i
-                    break
-                i += 1
-            while (j >= right_edge):
-                if arr[j] <= maxval:
+                    i -= 1
+
+                if arr[j] < maxval:
+                    if arr[j] < minval:
+                        minval = arr[j]
                     right_edge_max = j
-                    break
-                j -= 1
+                    j += 1
+
         return (left_edge_min, right_edge_max)
 
-    if len(arr) <= 1:
-        return (-1, -1)  # not possible to sort
-
-    left_edge, right_edge = find_unsorted_edges()
-    minval, maxval = find_middle_min_max(left_edge, right_edge)
-    left_edge_min, right_edge_max = find_insert_min_max(left_edge, right_edge, minval, maxval)
-    print "edges:", left_edge, right_edge, "min/max:", minval, maxval, "min/max edges:", left_edge_min, right_edge_max
-    if left_edge_min > -1 and right_edge_max > -1:
-        return (left_edge_min, right_edge_max)
-    else:
-        return (-1, -1)
+    return find_unsorted_sequence()
 
 ## Tests
 # arr = []                                      ## lo,hi -> -1,-1
 # arr = [1]                                     ## lo,hi -> -1,-1
 # arr = [1,2,3,4,5,6,7,8,9]                     ## lo,hi -> -1,-1
 
-arr = [1,2,4, 7,10,11,7,12,6,7, 16,18,19]     ## lo,hi -> 3,9
+arr = [1,2,4, 7,10,11, 7,12, 6,7, 16,18,19]     ## lo,hi -> 3,9
 # arr = [1,2,3, 5,6,4, 7,8,9]                   ## lo,hi -> 3,5
 # arr = [1,2,3,4,5,6,7, 9,8]                    ## lo,hi -> 7,8
 # arr = [2,1 ,3,4,5,6,7,8,9]                    ## lo,hi -> 0,1
 # arr = [1,3,2,4,5,6,7,8,9]                     ## lo,hi -> 1,2
 # arr = [2, 1]                                  ## lo,hi -> 0,1
 # arr = [1,2, 7,6,3,5, 7,8]                     ## lo,hi -> 2,5
-print subsort(arr)
