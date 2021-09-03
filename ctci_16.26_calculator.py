@@ -61,7 +61,15 @@ def expressiontoinfix(expression):
 
 ## --------------------------------------------------------------------------------
 def calculateV1(infix):
-
+    """
+    My first hacky version - brute force ish?
+    Stores equation as infix list
+    There are no negatives, it's only plus negative value
+    1. Read through list and multiply and divide everything
+       Store values in place e.g. 3,*,4 -> 0,+,12 etc.
+    2. Read through again and do addition and store to result to return
+    """
+    
     # First pass - multiply and divide
     def multiply_divide(infix):
         """
