@@ -4,9 +4,10 @@ Reading from 0 to n
 Also, I think the assumption that the order is ascending
    e.g. 0,1,2,3 etc.
 Method: read first bit (jth) start from least sig bit
-        if all zeros - done. stored bits will be answer
-        if more zeros than ones - add one to bit array
-        if more ones than zeros - add zero to bit array
+           if no more bits - done. stored number will be answer
+           if less zeros than ones - drop ones - add zero to number
+           if less ones than zeros - drop zeros - add one to number
+           if resulting number is larger than n, return None - none missing
 
 Note: this code amazes me: prety cool, pretty, pretty cool stuff.
 """
